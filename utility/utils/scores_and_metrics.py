@@ -34,16 +34,21 @@ def ult_df(plane_accidents_4F, plane_inventory_2F):
     num_accidents = make_model[make_model.isin(big_df['make_model'].values)]
     num_accidents = num_accidents.value_counts()
     big_df = big_df.set_index('make_model')
-    big_df['number_of_accidents'] = num_accidents
+    big_df['recorded_accidents_for_plane_model'] = num_accidents
     big_df = big_df.reset_index()
     
-    danger_scores_make_model = plane_accidents_4F[['make_model', 'danger_score']]
+    danger_scores_make_model = plane_accidents_4F[['make_model', 'danger_score', 'human_injury_numeric', 'aircraft_damage_numeric']]
     select_makes_models = big_df['make_model'].to_list()
     mean_danger = []
+    mean_human_injury = []
+    mean_aircraft_damage = []
     for make_and_model in select_makes_models:
         mean_danger.append(danger_scores_make_model[danger_scores_make_model['make_model'] == make_and_model]['danger_score'].mean())
+        mean_human_injury.append(danger_scores_make_model[danger_scores_make_model['make_model'] == make_and_model]['human_injury_numeric'].mean())
+        mean_aircraft_damage.append(danger_scores_make_model[danger_scores_make_model['make_model'] == make_and_model]['aircraft_damage_numeric'].mean())
+    big_df['mean_human_injury_score'] = mean_human_injury
+    big_df['mean_aircraft_damage_score'] = mean_aircraft_damage
     big_df['mean_danger_score'] = mean_danger
-    big_df['accidents_per_plane'] = big_df['number_of_accidents'] / big_df['number_of_planes']
-    big_df['accident_likelihood'] = big_df['accidents_per_plane'] / big_df['number_of_accidents']
+    big_df['recorded_accidents_per_plane_in_inventory'] = big_df['recorded_accidents_for_plane_model'] / big_df['number_of_planes']
     
     return big_df
