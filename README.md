@@ -146,4 +146,6 @@ We took the `number_of_planes` column to be the occurence of the plane make, mod
 
 ![Large Plane Recorded Accident Ratio Per Inventory](https://github.com/SamBen804/Aviation-Recommendations/assets/132294191/50af2a97-1af6-4e49-865b-b7e0421f97f4)
 
-Our Tableau Dashboard can be found here.
+## Tableau Dashboard
+
+Our Tableau Dashboard can be found [here](https://public.tableau.com/app/profile/sam.whitehurst/viz/RegionalPlaneRecordedAccidentRatioPerInventory/PrimeAirAircraftPurchaseRecommendationsDashboard).
