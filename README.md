@@ -79,11 +79,7 @@ We now clean the two datasets by normalizing our column names and only keeping t
 
 For our accidents dataset, we're only concerned information that tells us the year, make, model, extent of aircraft damage and human injury (we will later engineer a score off of each of these), and the count of the different types of injuries involved in the accident. To eventually be able to work with the two datasets in tandem, we transformed the make values to all lowercase, and only kept the manufacturer names as part of the value. For the model values, we stripped them of alphanumerics, and kept only the first three numbers of the model value.
 
-<plane_accidents df visual>
-
 For our inventory dataset, we keep the year, make, model, and number of seats columns (we will later engineer a plane size feature off of the number of seats). We transformed the makes and models of this dataset the same way we did for our accidents dataset.
-
-<plane_inventory df visual>
 
 Now that we have our datasets cleaned, we can engineer a few features within each that serve as the crux of our analysis.
 
@@ -92,8 +88,6 @@ Now that we have our datasets cleaned, we can engineer a few features within eac
 ### Make-Model Feature
 
 The first feature we engineer is the `make_model` feature. We do this for both datasets so that we can parse through these values for both easily.
-
-<plane_accidents_1F df visual>
 
 ### Human Injury and Aircraft Damage Features
 
@@ -117,8 +111,6 @@ Off of the  `human_injury`, we compute a `human_injury_numeric` in order to quan
 
 These raw scores are then transformed into our `human_injury_numeric` feature, which is the raw scores above min-max scaled and multiplied by 10 so as to give us a normalized score with ranging from 0-10.
 
-<plane_accidents_2F df visual>
-
 #### Aircraft Damage Feature
 
 The `'aircraft_damage'` column present in the accidents dataset already categorizes the damage experienced by the aircraft in a particular accident. Similar to how we scored the extent of human injury, we:
@@ -129,13 +121,9 @@ The `'aircraft_damage'` column present in the accidents dataset already categori
 
 These raw scores are then transformed into our `'aircraft_damage_numeric'` feature, which is the raw scores above min-max scaled and multiplied by 10 so as to give us a normalized score with ranging from 0-10.
 
-<plane_accidents_3F df visual>
-
 ### Aggregating a Danger Zone Score
 
 Now that we have our two scores pertaining to human injuries and aircraft damage, respectively, we can aggregate them to get a danger zone score. The danger zone score is **computed as the weighted sum of `human_injury_numeric` and `aircraft_damage_numeric`**. We placed more weight on the `aircraft_damage_numeric`, as we believed the extent of plane damage is indicative of higher potential of lives lost.
-
-<plane_accidents_4F df visual>
 
 ![Mean Danger Score Calculated (1)](https://github.com/SamBen804/Aviation-Recommendations/assets/132294191/9eccf779-9af0-4b83-9c26-ccf8ac906884)
 
@@ -149,8 +137,6 @@ To give a more granular account of danger levels across the plane, we categorize
 1. Planes with $3-20$ seats are categorized as `'small'`
 2. Planes with $21-100$ seats are categorized as '`medium`'.
 3. Planes with $>100$ seats are categorized as `'large'`.* 
-
-<plane_inventory_2F>
 
 ### Analysis
 
