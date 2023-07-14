@@ -2,6 +2,25 @@ import pandas as pd
 import numpy as np
 
 def clean_manufacturer_PA(name):
+
+    """
+
+    Parameters:
+    - name (str): The manufacturer name to be cleaned.
+
+    Returns:
+    - str: The cleaned manufacturer name.
+
+    Logic:
+        This function takes a string as input and returns a cleaned version of the string. 
+        It first converts the string to lower case and strips any leading or trailing white spaces. 
+        Then it replaces certain separators (such as '/', '-', '&', 'and', ',') with a space. 
+        It also removes certain vehicle type indicators (such as 'helicopter', 'aircraft', 'aviacija', 'balloon', 
+        'balloons', 'aviation', 'gmbh', 'co.', 'llc', 'leasing', 'limited', 'ltd', 'inc', 'corp', 
+        'corporation', 'company', 'sa', 'sas', 'bv', 'plc', 'pte', 'kg') from the string.
+        Finally, it returns the cleaned string.
+    """
+
     name = str(name)
 
     separators = [
@@ -55,6 +74,24 @@ def clean_manufacturer_PA(name):
 
 def clean_data_PA(plane_accidents_raw):
 
+    """
+
+    Parameters:
+    - plane_accidents_raw (pandas.DataFrame): The raw dataframe of plane accidents data to be cleaned.
+
+    Returns:
+    - pandas.DataFrame: The cleaned dataframe of plane accidents data.
+
+    Logic:
+        This function takes a dataframe of plane accident data and returns a cleaned version of it.
+        It first creates a copy of the dataframe and then renames the columns to remove any '.' characters and to make them lower case.
+        It also renames the 'event_date' column to 'year' and converts the dates to years.
+        It then selects the relevant columns and removes any rows where 'amateur_built' is 'No'.
+        It applies the clean_manufacturer_PA function to the 'make' column and cleans the 'model' column by removing '-' and '/' characters, 
+        converting the string to lower case, and taking only the first 3 digits.
+        Finally, it resets the index and returns the cleaned dataframe.
+    """
+
     relevant_columns = [
         'year',
         'aircraft_damage',
@@ -89,6 +126,28 @@ def clean_data_PA(plane_accidents_raw):
     return plane_accidents.reset_index().drop(columns='index')
 
 def clean_manufacturer_PI(name):
+
+    """
+
+    Parameters:
+    - name (str): The manufacturer name to be cleaned.
+
+    Returns:
+    - str: The cleaned manufacturer name.
+
+    Logic:
+        This function takes a string as input and returns a cleaned version of the string.
+        It first removes leading or trailing spaces and converts the string to lower case.
+        It also replaces '/' and '-' characters with spaces.
+        If the string starts with 'iberia', it removes 'iberia'. 
+        If 'iberia' is present anywhere in the string, it removes it.
+        Similarly, if 'vueling' is present anywhere in the string or if the string starts with 'vueling', it removes 'vueling'.
+        If the string is 'philippineairlines', it replaces it with NaN.
+        It then checks if the string contains any of the old values specified in the 'replacements' dictionary.
+        If it does, it replaces the old value with the corresponding new value.
+        If 'gulf' is present in the string, it replaces it with 'gulfstream'.
+        Finally, it replaces spaces with '/' and returns the cleaned string.
+    """
 
     replacements = {
     'boeing': ['boeing'],
@@ -128,6 +187,23 @@ def clean_manufacturer_PI(name):
     return name.replace(' ', '/')
 
 def clean_data_PI(plane_inventory_raw):
+
+    """
+
+    Parameters:
+    - plane_inventory_raw (pandas.DataFrame): The raw dataframe of plane inventory data to be cleaned.
+
+    Returns:
+    - pandas.DataFrame: The cleaned dataframe of plane inventory data.
+
+    Logic:
+        This function takes a dataframe of plane inventory data and returns a cleaned version of it.
+        It first creates a copy of the dataframe and then renames the columns to make them lower case.
+        It resets the index and applies the clean_manufacturer_PI function to the 'manufacturer' column.
+        It also cleans the 'model' column by removing '-' and '/' characters, converting the string to lower case, 
+        and taking only the first 3 digits.
+        Finally, it selects the relevant columns and returns the cleaned dataframe.
+    """
 
     relevant_columns = [
         'year',
